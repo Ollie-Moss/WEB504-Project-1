@@ -51,11 +51,13 @@ function LoadBookmarkElement({ name, url }) {
         .then((data) => {
             let bookmark = htmlElementFromString(data)
 
-            bookmark.querySelector("#delete").addEventListener('click', () => deleteBookmark(name))
-            bookmark.querySelector("#edit").addEventListener('click', () =>
-                editBookmark({ name, url })
-            )
-            let link = bookmark.querySelector("#url");
+            bookmark
+                .querySelector('#delete')
+                .addEventListener('click', deleteBookmark)
+            bookmark
+                .querySelector('#edit')
+                .addEventListener('click', () => editBookmark({ name, url }))
+            let link = bookmark.querySelector('#url')
             link.textContent = name
             link.href = url
             link.target = '_blank'
@@ -84,7 +86,7 @@ function editBookmark({ name, url }) {
 }
 
 // Remove a bookmark from the bookmark list
-function deleteBookmark(name) {
+function deleteBookmark() {
     if (confirm('Are you sure you want to delete this bookmark?')) {
         bookmarks.splice(bookmarkIndex, 1)
         updateBooks()
