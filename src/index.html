@@ -7,26 +7,31 @@
         <title>Book Mark Web App</title>
         <link rel="stylesheet" href="style.css" />
         <link
-            href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css"
-            rel="stylesheet"
-        />
-        <link
             href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css"
             rel="stylesheet"
         />
+        <script
+            src="https://kit.fontawesome.com/751c4d391f.js"
+            crossorigin="anonymous"
+        ></script>
     </head>
     <body>
-        <h1>Add Bookmark</h1>
+        <header>
+            <button id="show-modal">Add Bookmark</button>
+        </header>
         <!-- Bookmarks -->
-        <div id="bookmarks-container" class="container"></div>
+        <h2>Bookmarks</h2>
+        <main id="bookmarks-container" class="container"></main>
         <!-- Modal -->
-        <div id="modal" class="modal-container">
+        <div id="modal" class="modal-container hidden">
+            <div id="overlay"></div>
             <div class="modal">
                 <div class="modal-header">
                     <h3>Add Bookmark</h3>
-                    <i id="close-modal" class="fas fa-times close-modal" ></i>
+                    <i id="close-modal" class="fas fa-times close-modal"></i>
                 </div>
                 <div class="modal-content">
+                    <p id="error-message"></p>
                     <form id="bookform">
                         <!-- Website Name-->
                         <div class="form-group">
@@ -36,6 +41,7 @@
                             <input
                                 id="website-name"
                                 class="form-input"
+                                name="name"
                                 type="text"
                             />
                         </div>
@@ -47,22 +53,12 @@
                             <input
                                 id="website-url"
                                 class="form-input"
+                                name="url"
                                 type="text"
                             />
                         </div>
 
-                        <!-- Website Page Number -->
-                        <div class="form-group">
-                            <label for="website-page-number" class="form-label">
-                                Page Number
-                            </label>
-                            <input
-                                id="website-page-number"
-                                class="form-input"
-                                type="number"
-                            />
-                        </div>
-                        <input type="submit" value="Save"/>
+                        <input id="save-button" type="submit" value="Save" />
                     </form>
                 </div>
             </div>
