@@ -38,38 +38,54 @@ loadBookMarks()
 function loadBookMarks() {
     bookmarksContainer.innerHTML = ''
     for (const bookmark of bookmarks) {
-        LoadBookmarkElement(bookmark)
+        bookmarksContainer.appendChild(createBookmarkElement(bookmark))
     }
 }
 
-// Load A Bookmark Element
-function LoadBookmarkElement({ name, url }) {
-    fetch('/bookmark.html')
-        .then((response) => {
-            return response.text()
-        })
-        .then((data) => {
-            let bookmark = htmlElementFromString(data)
+function createBookmarkElement({ name, url }) {
+    let bookmark = document.createElement('div')
+    bookmark.classList.add('bookmark')
 
-            bookmark
-                .querySelector('#delete')
-                .addEventListener('click', deleteBookmark)
-            bookmark
-                .querySelector('#edit')
-                .addEventListener('click', () => editBookmark({ name, url }))
-            let link = bookmark.querySelector('#url')
-            link.textContent = name
-            link.href = url
-            link.target = '_blank'
+    let bookmarkContent = document.createElement('div')
+    bookmarkContent.classList.add('bookmark-content')
 
-            bookmarksContainer.appendChild(bookmark.firstChild)
-        })
-        .catch((error) => console.error('Error loading component:', error))
-}
+    let title = document.createElement('div')
 
-function htmlElementFromString(htmlString) {
-    const element = new DOMParser().parseFromString(htmlString, 'text/html')
-    return element.body
+    let icon = document.createElement('i')
+    icon.classList.add('fa-solid')
+    icon.classList.add('fa-globe')
+
+    let link = document.createElement('a')
+    link.id = 'url'
+    link.textContent = name
+    link.href = url
+    link.target = '_blank'
+
+    title.appendChild(icon)
+    title.appendChild(link)
+
+    let buttons = document.createElement('div')
+
+    let deleteButton = document.createElement('i')
+    deleteButton.classList.add('fas')
+    deleteButton.classList.add('fa-times')
+    deleteButton.addEventListener('click', () => deleteBookmark(name))
+
+    let editButton = document.createElement('button')
+    editButton.id = 'edit'
+    editButton.textContent = 'Edit'
+    editButton.addEventListener('click', () => editBookmark({ name, url }))
+
+    buttons.appendChild(editButton)
+    buttons.appendChild(deleteButton)
+
+    buttons.classList.add('bookmark-group')
+    title.classList.add('bookmark-group')
+
+    bookmarkContent.appendChild(title)
+    bookmarkContent.appendChild(buttons)
+    bookmark.appendChild(bookmarkContent)
+    return bookmark
 }
 
 // Set the modal state to the current bookmark
@@ -87,6 +103,9 @@ function editBookmark({ name, url }) {
 
 // Remove a bookmark from the bookmark list
 function deleteBookmark() {
+    bookmarkIndex = bookmarks.indexOf(
+        bookmarks.filter((bookmark) => bookmark.name === name)[0]
+    )
     if (confirm('Are you sure you want to delete this bookmark?')) {
         bookmarks.splice(bookmarkIndex, 1)
         updateBooks()
